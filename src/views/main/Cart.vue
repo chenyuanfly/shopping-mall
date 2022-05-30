@@ -1,26 +1,28 @@
 <template>
-  <el-table class="cart" ref="multipleTable" :data="goodsList" tooltip-effect="dark" @selection-change="select">
-    <el-table-column type="selection" width="100">
+  <el-table class="cart" :data="goodsList" tooltip-effect="dark">
+    <el-table-column type="selection" width="120">
     </el-table-column>
     <el-table-column label="商品信息" width="120">
       <template slot-scope="scope">
-        <el-image style="width: 100px; height: 100px" :src="url + scope.row.thumbnail" :fit="fit"></el-image>
+        <el-image style="width: 100px; height: 100px" :src="url + scope.row.thumbnail"></el-image>
       </template>
-
       <!-- <template slot-scope="scope">{{ scope.row.date }}</template> -->
     </el-table-column>
-    <el-table-column label="数量" width="120">
+    <el-table-column label="" width="180">
+      <template slot-scope="scope">{{ scope.row.name }}</template>
+    </el-table-column>
+    <el-table-column label="数量" width="180">
       <template slot-scope="scope">
-        <button class="minus" @click="minus">-</button>
-        <span>{{ scope.row.num }}</span>
-        <button class="add" @click="add">+</button>
+        <el-button size="mini" class="minus" @click="minus(scope.$index)">-</el-button>
+        <el-input style="width: 46px" size="small" v-model="scope.row.num"></el-input>
+        <el-button size="mini" class="add" @click="add(scope.$index)">+</el-button>
       </template>
     </el-table-column>
-    <el-table-column prop="price" label="单价" width="120">
+    <el-table-column prop="price" label="单价" width="180">
     </el-table-column>
     <el-table-column label="操作" show-overflow-tooltip>
       <template slot-scope="scope">
-        <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">
+        <el-button @click.native.prevent="deleteRow(scope.$index, goodsList)" type="text" size="small">
           移除
         </el-button>
       </template>
@@ -45,6 +47,10 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import Plugin from 'v-fit-columns';
+Vue.use(Plugin);
+
 import { cartAPI } from '@/api/cart'
 export default {
   data() {
@@ -71,18 +77,16 @@ export default {
     look() {
       console.log(this.goodsList);
     },
-    select(index) {
-      console.log(index);
-      this.checkboxON != this.checkboxON;
+    minus(index) {
+      if (this.goodsList[index].num <= 1) {
+        alert("数量不能小于1！");
+      }
+      else {
+        this.goodsList[index].num--;
+      }
     },
-    minus() {
-      console.log("-")
-    },
-    add() {
-      console.log("+")
-    },
-    del() {
-      console.log("删除")
+    add(index) {
+      this.goodsList[index].num++;
     },
     deleteRow(index, rows) {
       rows.splice(index, 1);
@@ -101,7 +105,7 @@ export default {
 
 <style scoped lang="less">
 .cart {
-  width: 1200px;
+  width: 1000px;
   margin: 0 auto;
 
   .cartLists {
