@@ -8,12 +8,11 @@
 <script>
 import HeaderNav from "../components/HeaderNav.vue"
 export default {
-  components:{
+  components: {
     HeaderNav
-}
+  }
 }
 </script>
 
 <style>
-
 </style>

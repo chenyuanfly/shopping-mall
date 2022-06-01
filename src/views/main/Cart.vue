@@ -1,33 +1,43 @@
 <template>
-  <el-table class="cart" :data="goodsList" tooltip-effect="dark">
-    <el-table-column type="selection" width="120">
-    </el-table-column>
-    <el-table-column label="商品信息" width="120">
-      <template slot-scope="scope">
-        <el-image style="width: 100px; height: 100px" :src="url + scope.row.thumbnail"></el-image>
-      </template>
-      <!-- <template slot-scope="scope">{{ scope.row.date }}</template> -->
-    </el-table-column>
-    <el-table-column label="" width="180">
-      <template slot-scope="scope">{{ scope.row.name }}</template>
-    </el-table-column>
-    <el-table-column label="数量" width="180">
-      <template slot-scope="scope">
-        <el-button size="mini" class="minus" @click="minus(scope.$index)">-</el-button>
-        <el-input style="width: 46px" size="small" v-model="scope.row.num"></el-input>
-        <el-button size="mini" class="add" @click="add(scope.$index)">+</el-button>
-      </template>
-    </el-table-column>
-    <el-table-column prop="price" label="单价" width="180">
-    </el-table-column>
-    <el-table-column label="操作" show-overflow-tooltip>
-      <template slot-scope="scope">
-        <el-button @click.native.prevent="deleteRow(scope.$index, goodsList)" type="text" size="small">
-          移除
-        </el-button>
-      </template>
-    </el-table-column>
-  </el-table>
+  <el-container class="cart">
+    <el-header class="header">购物车</el-header>
+    <el-main class="cartLists">
+      <el-table ref="multipleTable" :data="goodsList" @selection-change="handleSelectionChange" tooltip-effect="dark">
+        <el-table-column type="selection" width="40">
+        </el-table-column>
+        <el-table-column label="全选" width="120">
+        </el-table-column>
+        <el-table-column label="商品信息" width="120">
+          <template slot-scope="scope">
+            <el-image style="width: 100px; height: 100px" :src="url + scope.row.thumbnail"></el-image>
+          </template>
+        </el-table-column>
+        <el-table-column label="" width="180">
+          <template slot-scope="scope">{{ scope.row.name }}</template>
+        </el-table-column>
+        <el-table-column label="数量" width="180">
+          <template slot-scope="scope">
+            <el-input-number size="small" v-model="scope.row.num" @change="handleChange" :min="1" :max="9999">
+            </el-input-number>
+          </template>
+        </el-table-column>
+        <el-table-column prop="price" label="单价" width="180">
+        </el-table-column>
+        <el-table-column label="操作" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <el-button size="mini" type="danger" @click="deleteRow(scope.$index, goodsList)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-main>
+    <el-footer class="footer">
+      <div class="caculate">
+        <a class="sum" :model="sum"> 总价：{{ sum }}</a>
+        <el-button type="primary" round>结算</el-button>
+      </div>
+    </el-footer>
+  </el-container>
+
   <!-- <div class="cart">
     <el-button @click="look">goodsList</el-button>
     <ul class="cartLists">
@@ -58,7 +68,8 @@ export default {
       cardid: "",
       goodsList: [],
       url: 'http://202.193.53.235:8080/',
-      checkboxON: false
+      sum: 0,
+      multipleTable: []
     }
   },
   // mounted:function(){
@@ -77,20 +88,19 @@ export default {
     look() {
       console.log(this.goodsList);
     },
-    minus(index) {
-      if (this.goodsList[index].num <= 1) {
-        alert("数量不能小于1！");
-      }
-      else {
-        this.goodsList[index].num--;
-      }
-    },
-    add(index) {
-      this.goodsList[index].num++;
+    handleChange(value) {
+      console.log(value);
     },
     deleteRow(index, rows) {
       rows.splice(index, 1);
-    }
+    },
+    handleSelectionChange(val) {
+      this.multipleTable = val;               //  this.multipleTable 选中的值
+      this.sum = 0;
+      for (var i = 0; i < this.multipleTable.length; i++) {
+        this.sum += this.multipleTable[i].num * this.multipleTable[i].price;
+      }
+    },
     // autoPrintBtnClicked() {
     //   console.log("定时器进来了......")
     //   return this.getGoodsList()
@@ -105,13 +115,13 @@ export default {
 
 <style scoped lang="less">
 .cart {
-  width: 1000px;
+  width: 1200px;
   margin: 0 auto;
 
   .cartLists {
     margin-left: 100px;
     margin-right: 100px;
-    border: 1px solid rgb(0, 0, 0);
+    border: 1px solid rgb(204, 196, 196);
     border-radius: 40px;
 
     .goods {
@@ -141,20 +151,6 @@ export default {
         margin-right: 24px;
       }
 
-      .minus {
-        margin-left: 20px;
-        margin-right: 10px;
-        width: 20px;
-      }
-
-      .num {}
-
-      .add {
-        margin-left: 10px;
-        margin-right: 20px;
-        width: 20px;
-      }
-
       .price {
         margin-left: 46px;
         margin-right: 80px;
@@ -165,6 +161,23 @@ export default {
         width: 20px;
       }
     }
+  }
+
+  .header {
+    margin-top: 50px;
+  }
+
+  .footer {
+    margin-top: 20px;
+  }
+
+  .caculate {
+    float: right;
+    margin-right: 160px;
+  }
+
+  .sum {
+    margin: 110px;
   }
 }
 </style>
