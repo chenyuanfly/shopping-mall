@@ -65,7 +65,6 @@ import { cartAPI } from '@/api/cart'
 export default {
   data() {
     return {
-      cardid: "",
       goodsList: [],
       url: 'http://202.193.53.235:8080/',
       sum: 0,
