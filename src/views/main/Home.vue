@@ -1,21 +1,24 @@
 <template>
-  <div class="home">
-    Home
-    <el-row>
-      <el-col :span="5" v-for="(items, index) in goodsList" :key="index">
-        <el-card class="card" :body-style="{ padding: '0px' }">
-          <img :src="url + items.pthumbnail" class="image">
-          <div style="padding: 24px;">
-            <span>{{ items.name }}</span>
-            <div class="bottom">
-              <span class="price">¥ {{ items.price1 }}</span>
-              <span class="button" @click="insert">添加</span>
+  <el-container class="home">
+    <el-header class="header">首页</el-header>
+    <el-main class="homeLists">
+      <el-row>
+        <el-col :span="8" v-for="(items, index) in goodsList" :key="index">
+          <el-card class="card" :body-style="{ padding: '0px' }">
+            <img :src="url + items.pthumbnail" class="image">
+            <div style="padding: 24px;">
+              <span>{{ items.name }}</span>
+              <div class="bottom">
+                <span class="price">¥ {{ items.price1 }}</span>
+                <span class="button" @click="insert">添加</span>
+              </div>
             </div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-  </div>
+          </el-card>
+        </el-col>
+      </el-row>
+    </el-main>
+
+  </el-container>
 </template>
 
 <script>
@@ -54,6 +57,14 @@ export default {
 .home {
   width: 1200px;
   margin: 0 auto;
+}
+
+.header {
+  margin-top: 50px;
+}
+
+.homeLists {
+  margin-left: 20px;
 }
 
 .price {

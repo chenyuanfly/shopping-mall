@@ -30,6 +30,7 @@ p {
 
 body {
   text-align: center;
+  background-image: linear-gradient(to right, #15acf1, #37c561, #bcca3e);
 }
 
 li {

@@ -7,48 +7,56 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path:"/",
-    name:"Layout",
+    path: "/",
+    name: "Layout",
     component: Layout,
-    children:[
+    children: [
       {
-        path:'',
-        name:'Home',
+        path: '',
+        name: 'Home',
         component: Home,
-        meta:{
-          isLogin:true
+        meta: {
+          isLogin: true
         }
       },
       {
-        path:"cart",
-        name:'Cart',
-        component:() => import("../views/main/Cart.vue"),
-        meta:{
-          isLogin:true
+        path: "cart",
+        name: 'Cart',
+        component: () => import("../views/main/Cart.vue"),
+        meta: {
+          isLogin: true
         }
       },
       {
-        path:"params",
-        name:'Params',
-        component:() => import("../views/main/Params.vue"),
-        meta:{
-          isLogin:true
+        path: "params",
+        name: 'Params',
+        component: () => import("../views/main/Params.vue"),
+        meta: {
+          isLogin: true
         }
       },
       {
-        path:"product",
-        name:'Product',
-        component:() => import("../views/main/Product.vue"),
-        meta:{
-          isLogin:true
+        path: "product",
+        name: 'Product',
+        component: () => import("../views/main/Product.vue"),
+        meta: {
+          isLogin: true
+        }
+      },
+      {
+        path: "order",
+        name: 'Order',
+        component: () => import("../views/main/Order.vue"),
+        meta: {
+          isLogin: true
         }
       },
     ]
   },
   {
-    path:"/login",
-    name:'Login',
-    component:() => import("../views/Login.vue")
+    path: "/login",
+    name: 'Login',
+    component: () => import("../views/Login.vue")
   },
 ]
 

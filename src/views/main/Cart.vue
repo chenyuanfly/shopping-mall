@@ -133,8 +133,6 @@ export default {
       border: 1px solid rgb(0, 0, 0);
       border-radius: 20px;
 
-      .checkbox {}
-
       .img {
         margin-top: 10px;
         margin-left: 10px;
