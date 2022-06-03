@@ -10,19 +10,20 @@
               <span>{{ items.name }}</span>
               <div class="bottom">
                 <span class="price">¥ {{ items.price1 }}</span>
-                <span class="button" @click="insert">添加</span>
+                <span class="button" @click="insert(user.userid, items.id, 1, items.price1)">添加</span>
               </div>
             </div>
           </el-card>
         </el-col>
       </el-row>
     </el-main>
-
   </el-container>
 </template>
 
 <script>
 import { homeAPI } from '@/api/home'
+import { mapState } from 'vuex';
+import { insertGoodsAPI } from '@/api/insertGoods';
 
 export default {
   name: 'Home',
@@ -31,10 +32,12 @@ export default {
   },
   data() {
     return {
-      currentDate: new Date(),
       goodsList: [],
       url: 'http://202.193.53.235:8080/',
     };
+  },
+  computed: {
+    ...mapState("login", ["user"])
   },
   created() {
     this.getGoodsList();
@@ -42,12 +45,15 @@ export default {
   methods: {
     getGoodsList() {
       homeAPI().then(response => {
-        console.log(response);
+        //console.log(response);
         this.goodsList = response;
       })
     },
-    insert() {
-      console.log("添加购物车")
+    insert(userid, goodsid, num, price) {
+      console.log("添加购物车" + userid + " " + goodsid + " " + num + " " + price);
+      insertGoodsAPI(userid, goodsid, num, price).then(response => {
+        //console.log("response" + response);
+      })
     }
   }
 }

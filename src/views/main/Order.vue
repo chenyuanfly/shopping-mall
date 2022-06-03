@@ -33,25 +33,31 @@
 
 <script>
 import { orderAPI } from '@/api/order'
+import { mapState } from 'vuex';
 
 export default {
     data() {
         return {
-            orderList: {
-                id: [],
-                orderDetail: [],
-                orderTime: []
-            }
+            //orderList 的结构
+            // orderList: {
+            //     id: [],
+            //     orderDetail: [],
+            //     orderTime: []
+            // }
+            orderList: []
         }
+    },
+    computed: {
+        ...mapState("login", ["user"])
     },
     created() {
         this.getOrderList();
     },
     methods: {
         getOrderList() {
-            orderAPI().then(response => {
+            orderAPI(this.user.userid).then(response => {
                 this.orderList = response;
-                console.log(this.orderList);
+                //console.log(this.orderList);
             })
         }
     },

@@ -33,43 +33,33 @@
     <el-footer class="footer">
       <div class="caculate">
         <a class="sum" :model="sum"> 总价：{{ sum }}</a>
-        <el-button type="primary" round>结算</el-button>
+        <el-button type="primary" @click="generateOrder()" round>结算</el-button>
       </div>
     </el-footer>
   </el-container>
-
-  <!-- <div class="cart">
-    <el-button @click="look">goodsList</el-button>
-    <ul class="cartLists">
-      <div>购物车</div>>
-      <li class="goods" v-for="(items, index) in goodsList" :key='index'>
-        <input type="checkbox" :checkbox="checkboxON" @click="select(index)">
-        <img class="img" :src="url + items.thumbnail" />
-        <a class="goodsname">{{ items.name }}</a>
-        <button class="minus" @click="minus">-</button>
-        <span class="num">{{ items.num }}</span>
-        <button class="add" @click="add">+</button>
-        <a class="price">{{ items.price }}</a>
-        <a class="del" @click="del">删除</a>
-      </li>
-    </ul>
-  </div> -->
 </template>
 
 <script>
 import Vue from 'vue';
 import Plugin from 'v-fit-columns';
+import { mapState } from 'vuex';
+import { cartAPI } from '@/api/cart'
+import { deleteGoodsAPI } from '@/api/deleteGoods'
+import { generateOrderAPI } from '@/api/generateOrder'
 Vue.use(Plugin);
 
-import { cartAPI } from '@/api/cart'
 export default {
   data() {
     return {
       goodsList: [],
+      selectGoodsList: [],
       url: 'http://202.193.53.235:8080/',
       sum: 0,
       multipleTable: []
     }
+  },
+  computed: {
+    ...mapState("login", ["user"])
   },
   // mounted:function(){
   //   this.timer = setInterval(this.autoPrintBtnClicked, 10000);//60秒后运行 autoPrintBtnClicked方法
@@ -79,27 +69,47 @@ export default {
   },
   methods: {
     getGoodsList() {
-      cartAPI().then(response => {
-        console.log(response);
+      cartAPI(this.user.userid).then(response => {
+        //console.log(response);
         this.goodsList = response;
       })
     },
-    look() {
-      console.log(this.goodsList);
-    },
     handleChange(value) {
-      console.log(value);
+      //console.log(value);
     },
     deleteRow(index, rows) {
+      //console.log(rows[index].cardid);
+      deleteGoodsAPI(this.user.userid, rows[index].cardid).then(response => {
+      })
       rows.splice(index, 1);
     },
     handleSelectionChange(val) {
       this.multipleTable = val;               //  this.multipleTable 选中的值
       this.sum = 0;
+      this.selectGoodsList = [];
+      //选中的商品列表的价格计算和记录商品ID
       for (var i = 0; i < this.multipleTable.length; i++) {
+        this.selectGoodsList[i] = this.multipleTable[i].goodsId;
         this.sum += this.multipleTable[i].num * this.multipleTable[i].price;
       }
+      //console.log(this.selectGoodsList);
     },
+    generateOrder() {
+      var tempcartList = "";
+      var selectGoodsList = this.selectGoodsList;
+      for (var i = 0; i < selectGoodsList.length; i++) {
+        if (i === this.selectGoodsList.length - 1) {
+          tempcartList = tempcartList + selectGoodsList[i];
+        }
+        else {
+          tempcartList = tempcartList + selectGoodsList[i] + ",";
+        }
+      }
+      //console.log(tempcartList);
+      generateOrderAPI(this.user.userid, tempcartList).then(response => {
+        console.log(response);
+      })
+    }
     // autoPrintBtnClicked() {
     //   console.log("定时器进来了......")
     //   return this.getGoodsList()

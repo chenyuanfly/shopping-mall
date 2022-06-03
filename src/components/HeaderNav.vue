@@ -7,7 +7,7 @@
         <el-menu-item index="/order">我的订单</el-menu-item>
         <el-menu-item class="user">
             <img class="avatar" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
-            <!-- <span class="user-name">{{user.username}}</span> -->
+            <!-- <span class="user-name">{{user.userid}}</span> -->
             <el-button @click="logoutHandle">退出</el-button>
         </el-menu-item>
     </el-menu>
