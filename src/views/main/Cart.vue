@@ -92,23 +92,24 @@ export default {
         this.selectGoodsList[i] = this.multipleTable[i].goodsId;
         this.sum += this.multipleTable[i].num * this.multipleTable[i].price;
       }
-      //console.log(this.selectGoodsList);
+      console.log("selectGoods:::" + this.selectGoodsList);
     },
-    generateOrder() {
-      var tempcartList = "";
-      var selectGoodsList = this.selectGoodsList;
-      for (var i = 0; i < selectGoodsList.length; i++) {
-        if (i === this.selectGoodsList.length - 1) {
-          tempcartList = tempcartList + selectGoodsList[i];
+    async generateOrder() {
+      let tempcartList = "";
+      let selectGoodsList = this.selectGoodsList;
+      tempcartList = selectGoodsList.join();
+      console.log(this.user.userid);
+      console.log(tempcartList);
+      // generateOrderAPI(this.user.userid, tempcartList).then(response => {
+      //   console.log(response);
+      // })
+      let result = await this.$axios.get('/order/addCastOrder', {
+        params: {
+          userId: this.user.userid,
+          cartList: tempcartList
         }
-        else {
-          tempcartList = tempcartList + selectGoodsList[i] + ",";
-        }
-      }
-      //console.log(tempcartList);
-      generateOrderAPI(this.user.userid, tempcartList).then(response => {
-        console.log(response);
       })
+      console.log(result);
     }
     // autoPrintBtnClicked() {
     //   console.log("定时器进来了......")

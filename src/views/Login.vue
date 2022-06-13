@@ -124,7 +124,7 @@ export default {
                         ).then(response => {
                             //console.log(response);
                             if (response !== "invalid") {
-                                alert("登录成功");
+                                this.loginSuccess();
                                 this.setUser(response);
                                 localStorage.setItem(
                                     "cyf",
@@ -132,7 +132,7 @@ export default {
                                 );
                                 this.$router.push('/')
                             } else {
-                                alert("登录失败")
+                                this.loginFial();
                             }
                         })
                     }
@@ -143,13 +143,13 @@ export default {
                         ).then(response => {
                             //console.log(response);
                             if (response === "OK") {
-                                alert("注册成功");
+                                this.registerSuccess();
                             }
                             else if (response === "isexist") {
-                                alert("用户以存在");
+                                this.registerExist();
                             }
                             else {
-                                alert("注册失败");
+                                this.registerFial();
                             }
                         })
                     }
@@ -162,7 +162,33 @@ export default {
 
         handleTabsClick(tab) {
             this.activeTab = tab.name;
-        }
+        },
+
+        loginSuccess() {
+            this.$notify({
+                title: '登录成功',
+            });
+        },
+        loginFial() {
+            this.$notify({
+                title: '登录失败',
+            });
+        },
+        registerSuccess() {
+            this.$notify({
+                title: '注册成功，请返回登录界面',
+            });
+        },
+        registerFial() {
+            this.$notify({
+                title: '注册失败',
+            });
+        },
+        registerExist() {
+            this.$notify({
+                title: '用户以存在',
+            });
+        },
     }
 }
 </script>

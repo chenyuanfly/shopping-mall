@@ -7,11 +7,11 @@ import './assets/css/common.css'
 import './router/permission'
 import './utils/init'
 Vue.config.productionTip = false
-import axios from 'axios'
+import axios from '@/utils/request'
 import VueAxios from 'vue-axios'
 
 Vue.use(VueAxios, axios)
-
+Vue.prototype.$axios = axios;
 
 new Vue({
   router,

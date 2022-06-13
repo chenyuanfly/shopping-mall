@@ -1,8 +1,6 @@
 <template>
     <el-menu :default-active="active" mode="horizontal" text-color="#000000" router>
         <el-menu-item index="/">首页</el-menu-item>
-        <el-menu-item index="/product">商品管理</el-menu-item>
-        <el-menu-item index="/params">规格参数</el-menu-item>
         <el-menu-item index="/cart">购物车</el-menu-item>
         <el-menu-item index="/order">我的订单</el-menu-item>
         <el-menu-item class="user">

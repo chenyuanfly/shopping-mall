@@ -28,22 +28,6 @@ const routes = [
         }
       },
       {
-        path: "params",
-        name: 'Params',
-        component: () => import("../views/main/Params.vue"),
-        meta: {
-          isLogin: true
-        }
-      },
-      {
-        path: "product",
-        name: 'Product',
-        component: () => import("../views/main/Product.vue"),
-        meta: {
-          isLogin: true
-        }
-      },
-      {
         path: "order",
         name: 'Order',
         component: () => import("../views/main/Order.vue"),
